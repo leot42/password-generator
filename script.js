@@ -1,11 +1,18 @@
 // Assignment code here
 // @ts-check
 // Setup code
+// Use as an object to store user choices.
+let userChoiceData = {
+  passwordLength: 999,
+  charTypeUppercase: false,
+  charTypeLowercase: false,
+  charTypeNumbers: false,
+  charTypeSymbols: false
+}
 
 // Inclusive Random Number Generator
 /**
  * @summary Return a random number that is equal to or between the two given parameters.
- * 
  * @param {number} lowestNumberReturnable Lowest number that can be generated.
  * @param {number} highestNumberReturnable Highest number that can be generated.
  * @returns {number} A number that is at most equal to the parameter highestNumberReturnable but no less than lowestNumberReturnable parameter.
@@ -89,7 +96,7 @@ class CharType {
 
     // If there is more than one array of charRange objects randomly choose one.
     if (this.#charRangeArray.length > 1) {
-      // Get a random number that does not exeed the number of elements
+      // Get a random number that does not exceed the number of elements
       let randomIndexToUse = getRandomIntInclusive(0, this.#charRangeArray.length - 1);
       return this.#charRangeArray[randomIndexToUse];
     }
@@ -120,7 +127,80 @@ let lowerCaseCharType = new CharType(lowerCaseCharRange);
 let numbersCharType = new CharType(numbersCharRange);
 let symbolsCharType = new CharType(symbolsCharRange);
 
+// Dialog View //#region
 
+/** Controller  */
+class Controller {
+  /**@type {ViewPage} The default viewPage to start. */
+  #defaultPage;
+
+  /**PageData */
+  #pageData;
+}
+/**@summary The logic that define the ui of a page of dialog */
+class ViewPage {
+  /**@description Used as the first line in the page of dialog.
+  *@type {string} */ header
+  /**@description The descriptive content of the page.
+  *@type {string} */ dialogParagraph;
+  dataModel;
+
+  constructor(header, dialogParagraph, model) {
+    this.header = header;
+    this. dialogParagraph = dialogParagraph;
+    this.dataModel = model;
+
+  }
+}
+
+/**Defines the encapsulating window for views, there controlling logic and the models of data they operate upon. */
+
+class ViewWindow {
+  /**@type {ViewPage}*/
+  #viewPage;
+  constructor(viewPage) {
+    this.viewPage = viewPage
+  }
+
+  /**Sets the current view page */
+ // set setViewPage
+
+  /**@returns {ViewPage} Gets the current view page. */
+  get getViewPage() {
+    return this.#viewPage;
+  }
+}
+
+
+/**@type {string} */
+
+// view dialog content
+let passwordPageHeader = "Choose password length."
+let dialogParagraph = "Input a number between 8 and 128";
+let passwordLengthPageModel = {"passwordLength":"99"};
+
+let passwordCharTypePageModel = {"isUpperCase":false, "isLowerCase": false, "isNumber": false, "isSpecialChar": false};
+
+//
+
+// Display it and grab the result.
+function getPasswordLength() {
+// Create a password length page, display it and grab the result.
+  let decidePasswordLength = new ViewPage(passwordPageHeader, dialogParagraph, passwordLengthPageModel);
+
+  // Display the password page and return the result.
+  decidePasswordLength.dataModel.passwordLength = prompt(`${passwordPageHeader}\n ${dialogParagraph}\n`);
+}
+//Confirm that the choice was correct.
+// prompt(decidePasswordLength.dataModel.passwordLength);
+//
+let message = "message";
+let viewDialog = "test prompt 2";
+let testUserResponse = ""
+testUserResponse = prompt(viewDialog);
+alert(testUserResponse);
+
+// //#endregion
 
 // END OF SETUP
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -128,6 +208,7 @@ let symbolsCharType = new CharType(symbolsCharRange);
 
 
 function generatePassword() {
+
   return generateRandomChar(symbolsCharType.getCharRangeArrayContents);
 }
 
