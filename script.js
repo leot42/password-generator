@@ -10,6 +10,77 @@ let userChoiceData = {
   charTypeSymbols: false
 }
 
+/**Structure of the page text. */
+class PageStructure {
+  #userAnswer;
+  constructor(titleText, choiceText, invalidAnswerText, exampleAnswerText, displayAnswerTextBox) {
+    this.titleText = titleText + "\n\n";
+    this.choiceText = choiceText + "\n";
+    this.invalidAnswerText = invalidAnswerText + "\n";
+    this.exampleAnswerText = exampleAnswerText + "\n";
+    this.displayAnswerTextBox = displayAnswerTextBox;
+  }
+//Returns validated and confirmed answer from the User
+  getAnswer() {
+    //Ask question
+    let unValidatedUserAnswer = this.askQuestion();
+    // check to see if answer is a number.
+
+    // check to see if answer is an acceptable answer.
+
+    //check to see if answer is an acceptable option.
+
+ 
+  }
+
+  askQuestion() {
+    // Ask the user the question
+     this.#userAnswer = prompt(this.getFullPageText);
+     // validate that userAnswer is a number and an acceptable answer for the question asked.
+      /* while (userAnswer == NaN) {
+        // display not an acceptable
+            alert(`Is __"${this.#userAnswer}"__ the choice you intended? \n For Yes Enter_1_ \nFor No Enter _2_`);
+      }
+      */
+     //if answer is valid confirm that this was what the user intended to ask for.
+    prompt(`Is __"${this.#userAnswer}"__ the choice you intended? \n    For Yes Enter_1_ \n    For No Enter _2_`);
+  }
+
+  verifyAnswerWasIntended() {
+    let intendedAnswer = prompt(`Is __"${this.#userAnswer}"__ the choice you intended? \n For Yes Enter_1_ \nFor No Enter _2_`);
+    let intendedAnswerCheck = validateUserOutput(intendedAnswer);
+
+    if (intendedAnswerCheck === 1) {
+      // put answer in user choice data
+      /* move to next page or maybe just return and have the out side scope move to the next question */}
+    else {}
+  }
+  
+  get getFullPageText() {
+    return this.titleText + this.choiceText + this.exampleAnswerText;
+  }
+}
+// Page content instances
+let passwordLengthQuestionPage = new PageStructure(
+  "Choose Password Length\n",
+  "Password length can from 8 to 128 characters long.\n",
+  "I sorry that was an invalid answer.\n",
+  "Example 8 or 99 or 128\n",
+  ""
+) 
+
+/**@summary Valdate user input
+ * @param {string} userPromptOutput Text recieved from the prompt given by the user.
+ * @returns {number | NaN} User output confirmed to be a number.
+ */
+function validateUserOutput(userPromptOutput) {
+    let parsedUserOutput = parseInt(userPromptOutput);
+    if(parsedUserOutput === NaN){ 
+      console.log(`Error: userPromptOutput:${userPromptOutput} was not a number.`); 
+    }
+    return parsedUserOutput;
+}
+
 // Inclusive Random Number Generator
 /**
  * @summary Return a random number that is equal to or between the two given parameters.
@@ -194,11 +265,6 @@ function getPasswordLength() {
 //Confirm that the choice was correct.
 // prompt(decidePasswordLength.dataModel.passwordLength);
 //
-let message = "message";
-let viewDialog = "test prompt 2";
-let testUserResponse = ""
-testUserResponse = prompt(viewDialog);
-alert(testUserResponse);
 
 // //#endregion
 
@@ -206,8 +272,13 @@ alert(testUserResponse);
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-
+// call question page that returns a valid answer
 function generatePassword() {
+//Get password length
+passwordLengthQuestionPage.askQuestion(); // maybe should be named .getAnswer() method
+
+//Choose chars types
+/**@todo */ //chooseCharTypesPage.askQuestion();
 
   return generateRandomChar(symbolsCharType.getCharRangeArrayContents);
 }
