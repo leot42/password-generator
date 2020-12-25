@@ -10,6 +10,19 @@ let userChoiceData = {
   charTypeSymbols: false
 }
 
+
+/**@summary Valdate that an input is a number.
+ * @param {string} numberToCheck Text recieved from the prompt given by the user.
+ * @returns {boolean} numberToCheck confirmed to be a number.
+ */
+function isValidNumber(numberToCheck) {
+  let parsedUserOutput = parseInt(numberToCheck);
+  if(parsedUserOutput === NaN){ 
+    console.log(`Error: userPromptOutput: ${numberToCheck} was not a number.`); 
+  }
+  return true;
+}
+
 /**Structure of the page text. */
 class PageStructure {
   #userAnswer;
