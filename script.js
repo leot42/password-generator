@@ -2,6 +2,7 @@
 // @ts-check
 // Setup code
 // Use as an object to store user choices.
+let modelLogic;
 let userChoiceData = {
   passwordLength: 999,
   charTypeUppercase: false,
@@ -16,32 +17,57 @@ let userChoiceData = {
  * @returns {boolean} numberToCheck confirmed to be a number.
  */
 function isValidNumber(numberToCheck) {
+  let isANumber = false;
   let parsedUserOutput = parseInt(numberToCheck);
-  if(parsedUserOutput === NaN){ 
+  if(isNaN(parsedUserOutput)){ 
     console.log(`Error: userPromptOutput: ${numberToCheck} was not a number.`); 
+  isANumber = false;
+  return isANumber;
   }
-  return true;
+  else if(parsedUserOutput != NaN) { isANumber = true;
+    
+  }
+  return isANumber;
 }
 
-/**Structure of the page text. */
-class PageStructure {
+/**Structure of the page text and validation logic. */
+class PageTextStructure {
+  
   #userAnswer;
-  constructor(titleText, choiceText, invalidAnswerText, exampleAnswerText, displayAnswerTextBox) {
+  /**
+   * 
+   * @param {*} titleText The header of the page to display to the user.
+   * @param {*} choiceText The Numeric options that are available to the user to input.
+   * @param {*} invalidAnswerText The message to display when the user input was invalid.
+   * @param {*} exampleAnswerText Text to give the user examples to follow.
+   * @param {*} validationLogic Model to validate user input.
+   */
+  constructor(titleText, choiceText, invalidAnswerText, exampleAnswerText, validationLogic) {
     this.titleText = titleText + "\n\n";
     this.choiceText = choiceText + "\n";
     this.invalidAnswerText = invalidAnswerText + "\n";
     this.exampleAnswerText = exampleAnswerText + "\n";
-    this.displayAnswerTextBox = displayAnswerTextBox;
+    this.validationLogic = validationLogic;
   }
-//Returns validated and confirmed answer from the User
+
+  run() {
+    //throw new Error("Method not implemented.");
+    // ask question
+    this.getAnswer();
+
+    // check to see if answer is a number.
+    this.isNumberCheckTrue();
+
+    //check to see if answer is the intended option.
+    this.verifyAnswerWasIntended();
+
+  }
+//Returns unvalidated answer from the User
   getAnswer() {
     //Ask question
     let unValidatedUserAnswer = this.askQuestion();
-    // check to see if answer is a number.
 
-    // check to see if answer is an acceptable answer.
-
-    //check to see if answer is an acceptable option.
+    // check to see if answer is an valid answer.
 
  
   }
@@ -49,49 +75,65 @@ class PageStructure {
   askQuestion() {
     // Ask the user the question
      this.#userAnswer = prompt(this.getFullPageText);
-     // validate that userAnswer is a number and an acceptable answer for the question asked.
-      /* while (userAnswer == NaN) {
-        // display not an acceptable
-            alert(`Is __"${this.#userAnswer}"__ the choice you intended? \n For Yes Enter_1_ \nFor No Enter _2_`);
-      }
-      */
-     //if answer is valid confirm that this was what the user intended to ask for.
-    prompt(`Is __"${this.#userAnswer}"__ the choice you intended? \n    For Yes Enter_1_ \n    For No Enter _2_`);
   }
 
   verifyAnswerWasIntended() {
     let intendedAnswer = prompt(`Is __"${this.#userAnswer}"__ the choice you intended? \n For Yes Enter_1_ \nFor No Enter _2_`);
     let intendedAnswerCheck = validateUserOutput(intendedAnswer);
 
-    if (intendedAnswerCheck === 1) {
+    if (intendedAnswerCheck === true) {
       // put answer in user choice data
-      /* move to next page or maybe just return and have the out side scope move to the next question */}
+      userChoiceData.passwordLength = this.#userAnswer;
+
+      //change context to next question
+    }
     else {}
   }
+
+  isNumberCheckTrue() {
+    if(isValidNumber(this.#userAnswer) === true){console.log("was a number"); return;}
+    else {
+      // user answer is not a number
+      //give the user an error message and reissue the question
+      // maybe pass in a new state object of ths same question with the appropriate error message.
+      // doing so should give the user feedback as well
+    }
+  }
+
   
   get getFullPageText() {
     return this.titleText + this.choiceText + this.exampleAnswerText;
   }
 }
-// Page content instances
-let passwordLengthQuestionPage = new PageStructure(
+// Page PageTextStructure instances
+let passwordLengthQuestionPage = new PageTextStructure(
   "Choose Password Length\n",
   "Password length can from 8 to 128 characters long.\n",
   "I sorry that was an invalid answer.\n",
   "Example 8 or 99 or 128\n",
   ""
+);
+
+let passwordCharTypeQuestionPage = new PageTextStructure(
+  "Choose Character Types Used\n",
+  "The options for the types are:\n\n1: Uppercase\n    ex: JKAX\n\n2: Lowercase\nex: tbiqz\n\n3: Numeric\n    ex: 49706\n\n4: Special Characters\n    ex: *_.\"?\) \n",
+  "I sorry that was an invalid answer.\n",
+  "Example 8 or 99 or 128\n",
+  "",
+  
 ) 
 
-/**@summary Valdate user input
+/**@summary Valdates user input as a number.
  * @param {string} userPromptOutput Text recieved from the prompt given by the user.
- * @returns {number | NaN} User output confirmed to be a number.
+ * @returns {boolean} True if user output confirmed to be a number.
  */
 function validateUserOutput(userPromptOutput) {
     let parsedUserOutput = parseInt(userPromptOutput);
     if(parsedUserOutput === NaN){ 
       console.log(`Error: userPromptOutput:${userPromptOutput} was not a number.`); 
+      return false;
     }
-    return parsedUserOutput;
+    else {return true;}
 }
 
 // Inclusive Random Number Generator
@@ -265,21 +307,21 @@ let passwordLengthPageModel = {"passwordLength":"99"};
 
 let passwordCharTypePageModel = {"isUpperCase":false, "isLowerCase": false, "isNumber": false, "isSpecialChar": false};
 
-//
-
-// Display it and grab the result.
-function getPasswordLength() {
-// Create a password length page, display it and grab the result.
-  let decidePasswordLength = new ViewPage(passwordPageHeader, dialogParagraph, passwordLengthPageModel);
-
-  // Display the password page and return the result.
-  decidePasswordLength.dataModel.passwordLength = prompt(`${passwordPageHeader}\n ${dialogParagraph}\n`);
-}
-//Confirm that the choice was correct.
-// prompt(decidePasswordLength.dataModel.passwordLength);
-//
-
 // //#endregion
+/**@param {PageTextStructure} startingState The default starting page for the state machine.*/
+function pageContext(startingState) {
+   let currentState = startingState;
+
+/** summary Called by a stateObj to change the state within the page context which will be called later by the this.start method.
+ * @param {PageTextStructure} stateObj Represents a questionPage and it's validation.
+*/
+  this.change = function (stateObj){currentState = stateObj;}
+
+/**@summary Allows the currentState to call out to the pageContext in order to run the currentState property */
+  this.start = function () {currentState.run();}
+
+}
+
 
 // END OF SETUP
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -288,8 +330,11 @@ function getPasswordLength() {
 // call question page that returns a valid answer
 function generatePassword() {
 //Get password length
-passwordLengthQuestionPage.askQuestion(); // maybe should be named .getAnswer() method
+//passwordLengthQuestionPage.askQuestion(); // maybe should be named .getAnswer() method
 
+//todo Add pageContext
+var pageContextInst = new pageContext(passwordLengthQuestionPage);
+pageContextInst.start();
 //Choose chars types
 /**@todo */ //chooseCharTypesPage.askQuestion();
 
