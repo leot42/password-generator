@@ -2,7 +2,11 @@
 // @ts-check
 // Setup code
 // Use as an object to store user choices.
-let modelLogic;
+
+// process user options for the password page
+let passwordModelLogic = (params) => {
+  
+};
 let userChoiceData = {
   passwordLength: 999,
   charTypeUppercase: false,
@@ -78,21 +82,59 @@ class PageTextStructure {
   }
 
   verifyAnswerWasIntended() {
-    let intendedAnswer = prompt(`Is __"${this.#userAnswer}"__ the choice you intended? \n For Yes Enter_1_ \nFor No Enter _2_`);
-    let intendedAnswerCheck = validateUserOutput(intendedAnswer);
+    /** {bool} */
+    let isUserAnswerValid;
+    /**{bool} User confimation answer parsed into a number. */
+    let userAnswerNumber = null;
+    
+    // ask user for a "1" or "2" to let the user confirm ther answer
+    let userAnswer = prompt(`Is __"${this.#userAnswer}"__ the choice you intended? \n For Yes Enter_1_ \nFor No Enter _2_`);
+    
+    // did the user enter a number?
+    isUserAnswerValid = isUserUserOutputValidNumber(userAnswer);
 
-    if (intendedAnswerCheck === true) {
+    if (isUserAnswerValid) { userAnswerNumber = parseInt(userAnswer);}
+    // did the user enter answer with a "1" or "2"
+
+    //  if(isUserAnswerValid === true) after validating that it is a number. 
+    // Make sure answer is a valid confirmation option.
+    if (isUserAnswerValid) {
+
+      // if userAnswerNumber is not a 1 or 2  then isUserAnswerValid is now invalid.
+      if ((userAnswerNumber === 1) || (userAnswerNumber === 2)) {
+        console.log(`User confirmation answer was '${userAnswer}' which was a valid option.`);
+      }
+      else { // answer was not a valid option
+        // answer was not a valid option
+        isUserAnswerValid = false;
+        console.log(`User confirmation answer was '${userAnswer}' which was not a '1' or '2'.`);
+      }
+
+    }
+
+    // ask the user the question untill they give a valid answer and confirm their input is correct..
+    while (isUserAnswerValid = false || userAnswerNumber === 2) {
+      this.run()
+      // throw "User invald confirmation answer question re-ask not impremented."
+    }
+
+    if (isUserAnswerValid === true) {
       // put answer in user choice data
       userChoiceData.passwordLength = this.#userAnswer;
 
       //change context to next question
+      throw "Context change not implemented for user entering an intended answer.";
     }
-    else {}
+    else {
+      throw "Context change not implemented for user entering an un-intended answer.";
+
+    }
   }
 
   isNumberCheckTrue() {
     if(isValidNumber(this.#userAnswer) === true){console.log("was a number"); return;}
     else {
+      throw "Answer is not a number handling is not implemented."
       // user answer is not a number
       //give the user an error message and reissue the question
       // maybe pass in a new state object of ths same question with the appropriate error message.
@@ -127,7 +169,7 @@ let passwordCharTypeQuestionPage = new PageTextStructure(
  * @param {string} userPromptOutput Text recieved from the prompt given by the user.
  * @returns {boolean} True if user output confirmed to be a number.
  */
-function validateUserOutput(userPromptOutput) {
+function isUserUserOutputValidNumber(userPromptOutput) {
     let parsedUserOutput = parseInt(userPromptOutput);
     if(parsedUserOutput === NaN){ 
       console.log(`Error: userPromptOutput:${userPromptOutput} was not a number.`); 
