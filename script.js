@@ -4,8 +4,22 @@
 // Use as an object to store user choices.
 
 // process user options for the password page
-let passwordModelLogic = (params) => {
-  
+/**
+ * Validate that the options selected is valid for the password question.
+ * @param {number} options The number representing the options choice.
+ * @returns {boolean} I the option valid for this question.
+ */
+function passwordModelLogic (options) {
+  this.options = options;
+  if (this.options > 7 && this.options <= 128) { // User answer was a valid option.
+    console.log(`The user value of ${options} is between 7 and 129.`);
+    return true;    
+  } else { // User answer was not a valid option.
+    console.log(`The user value of ${options} is invalid since it is not between 7 and 129.`);
+    
+    // alert() the user that the option was not valid.
+    alert(`Sorry.\n\n    ${options} was not a valid option. \n\nNo problem... \n\nLets try again!`)
+    return false}
 };
 let userChoiceData = {
   passwordLength: 999,
@@ -62,9 +76,29 @@ class PageTextStructure {
     // check to see if answer is a number.
     this.isNumberCheckTrue();
 
+    // validate that the answer is a valid option
+    this.modelOptionsValidation();
+
     //check to see if answer is the intended option.
     this.verifyAnswerWasIntended();
 
+    // save answer to outside model.
+    throw "State permanence not completed. Need to decouple from global and add as a parameter. "
+
+  }
+
+  // Validate that the options specific to the page model as true
+  modelOptionsValidation() {
+    // check user input 
+    /** {bool} */
+    let isValidOption = this.validationLogic(this.#userAnswer);
+
+    // if valid continue
+    if (isValidOption) { // continue
+    } else {
+      // if user answer is not a valid option re-ask the question.
+      this.getAnswer();
+    }
   }
 //Returns unvalidated answer from the User
   getAnswer() {
@@ -114,6 +148,10 @@ class PageTextStructure {
 
     // ask the user the question untill they give a valid answer and confirm their input is correct..
     while (isUserAnswerValid = false || userAnswerNumber === 2) {
+      // if user answer is valid but is not intended apologize 
+      if (isUserAnswerValid) {
+        alert(`Whoops...\n\n    It seems ${userAnswerNumber} wasn't the input that was intended.\n\n    That's okay.\n\nLet's try again.`)
+      }
       this.run()
       // throw "User invald confirmation answer question re-ask not impremented."
     }
@@ -153,7 +191,7 @@ let passwordLengthQuestionPage = new PageTextStructure(
   "Password length can from 8 to 128 characters long.\n",
   "I sorry that was an invalid answer.\n",
   "Example 8 or 99 or 128\n",
-  ""
+  passwordModelLogic
 );
 
 let passwordCharTypeQuestionPage = new PageTextStructure(
@@ -245,7 +283,7 @@ class CharType {
   }
 
 #isCharRange = (unValidatedObj) => {
-  if (unValidatedObj instanceof CharRange) { return true}
+  if (unValidatedObj instanceof CharRange) { return true;}
 }
   
 
