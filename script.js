@@ -9,30 +9,31 @@
  * @param {number} options The number representing the options choice.
  * @returns {boolean} I the option valid for this question.
  */
-function passwordLengthModelLogic (options) {
+function passwordLengthModelLogic(options) {
   this.options = options;
   if (this.options > 7 && this.options <= 128) { // User answer was a valid option.
     console.log(`The user value of ${options} is between 7 and 129.`);
-    return true;    
+    return true;
   } else { // User answer was not a valid option.
     console.log(`The user value of ${options} is invalid since it is not between 7 and 129.`);
-    
+
     // alert() the user that the option was not valid.
     alert(`Sorry.\n\n    ${options} was not a valid option. \n\nNo problem... \n\nLets try again!`)
-    return false}
+    return false
+  }
 };
 
-function passwordCharTypeModelLogic (options) {
+function passwordCharTypeModelLogic(options) {
   let isUserOptionsAnswerValid = true;
   // check options for validity
-  if (parseInt(options) === null || parseInt(options) === NaN) { isUserOptionsAnswerValid = false;}
+  if (parseInt(options) === null || parseInt(options) === NaN) { isUserOptionsAnswerValid = false; }
 
   this.optionsArr = Array.from(options);
   this.optionsArr.forEach(element => {
-    if (parseInt(element) === 1) {userChoiceData.charTypeUppercase = true;} // Use uppercase.
-    if (parseInt(element) === 2) {userChoiceData.charTypeLowercase = true;} // Use lowercase.
-    if (parseInt(element) === 3) {userChoiceData.charTypeNumbers = true;} // Use numeric.
-    if (parseInt(element) === 4) {userChoiceData.charTypeSymbols = true;} // Use special characters.
+    if (parseInt(element) === 1) { userChoiceData.charTypeUppercase = true; } // Use uppercase.
+    if (parseInt(element) === 2) { userChoiceData.charTypeLowercase = true; } // Use lowercase.
+    if (parseInt(element) === 3) { userChoiceData.charTypeNumbers = true; } // Use numeric.
+    if (parseInt(element) === 4) { userChoiceData.charTypeSymbols = true; } // Use special characters.
     console.log("passwordCharTypeModelLogic -> userChoiceData -> userChoiceData modified");
   });
   // mark userChoice process as complete
@@ -57,13 +58,14 @@ let userChoiceData = {
 function isValidNumber(numberToCheck) {
   let isANumber = false;
   let parsedUserOutput = parseInt(numberToCheck);
-  if(isNaN(parsedUserOutput)){ 
-    console.log(`Error: userPromptOutput: ${numberToCheck} was not a number.`); 
-  isANumber = false;
-  return isANumber;
+  if (isNaN(parsedUserOutput)) {
+    console.log(`Error: userPromptOutput: ${numberToCheck} was not a number.`);
+    isANumber = false;
+    return isANumber;
   }
-  else if(parsedUserOutput != NaN) { isANumber = true;
-    
+  else if (parsedUserOutput != NaN) {
+    isANumber = true;
+
   }
   return isANumber;
 }
@@ -107,7 +109,7 @@ class PageTextStructure {
     this.verifyAnswerWasIntended();
 
     // save answer to outside model.
-   // throw "State permanence not completed. Need to decouple from global and add as a parameter. "
+    // throw "State permanence not completed. Need to decouple from global and add as a parameter. "
 
   }
 
@@ -124,7 +126,7 @@ class PageTextStructure {
       this.getAnswer();
     }
   }
-//Returns unvalidated answer from the User
+  //Returns unvalidated answer from the User
   getAnswer() {
     //Ask question
     let unValidatedUserAnswer = this.askQuestion();
@@ -135,7 +137,7 @@ class PageTextStructure {
 
   askQuestion() {
     // Ask the user the question
-     this.#userAnswer = prompt(this.getFullPageText);
+    this.#userAnswer = prompt(this.getFullPageText);
   }
 
   verifyAnswerWasIntended() {
@@ -143,14 +145,14 @@ class PageTextStructure {
     let isUserAnswerValid;
     /**{bool} User confimation answer parsed into a number. */
     let userAnswerNumber = null;
-    
+
     // ask user for a "1" or "2" to let the user confirm ther answer
     let userAnswer = prompt(`Is __"${this.#userAnswer}"__ the choice you intended? \n For Yes Enter_1_ \nFor No Enter _2_`);
-    
+
     // did the user enter a number?
     isUserAnswerValid = isUserUserOutputValidNumber(userAnswer);
 
-    if (isUserAnswerValid) { userAnswerNumber = parseInt(userAnswer);}
+    if (isUserAnswerValid) { userAnswerNumber = parseInt(userAnswer); }
     // did the user enter answer with a "1" or "2"
 
     //  if(isUserAnswerValid === true) after validating that it is a number. 
@@ -196,7 +198,7 @@ class PageTextStructure {
   }
 
   isNumberCheckTrue() {
-    if(isValidNumber(this.#userAnswer) === true){console.log("was a number"); return;}
+    if (isValidNumber(this.#userAnswer) === true) { console.log("was a number"); return; }
     else {
       alert(`Whoops...\n\n    It seems "${this.#userAnswer}" wasn't entirely a number.\n\n    That's okay.\n\nLet's try again.`)
       this.run();
@@ -208,7 +210,7 @@ class PageTextStructure {
     }
   }
 
-  
+
   get getFullPageText() {
     return this.titleText + this.choiceText + this.exampleAnswerText;
   }
@@ -231,7 +233,7 @@ var passwordCharTypeQuestionPage = new PageTextStructure(
   passwordCharTypeModelLogic,
   // @ts-ignore
   generateRandomChar
-) 
+)
 
 
 
@@ -240,12 +242,12 @@ var passwordCharTypeQuestionPage = new PageTextStructure(
  * @returns {boolean} True if user output confirmed to be a number.
  */
 function isUserUserOutputValidNumber(userPromptOutput) {
-    let parsedUserOutput = parseInt(userPromptOutput);
-    if(parsedUserOutput === NaN){ 
-      console.log(`Error: userPromptOutput:${userPromptOutput} was not a number.`); 
-      return false;
-    }
-    else {return true;}
+  let parsedUserOutput = parseInt(userPromptOutput);
+  if (parsedUserOutput === NaN) {
+    console.log(`Error: userPromptOutput:${userPromptOutput} was not a number.`);
+    return false;
+  }
+  else { return true; }
 }
 
 // Inclusive Random Number Generator
@@ -271,26 +273,26 @@ class CharRange {
   /**@type {number} */
   #upperCharRange;
 
-/**
- * 
-  * @param {number} lowerCharRange Lowest ASCII character encoded number.
- * @param {number} upperCharRange Highest ASCII character encoded number.
- */
+  /**
+   * 
+    * @param {number} lowerCharRange Lowest ASCII character encoded number.
+   * @param {number} upperCharRange Highest ASCII character encoded number.
+   */
   constructor(lowerCharRange, upperCharRange) {
     this.lowerCharRange = lowerCharRange;
     this.upperCharRange = upperCharRange;
   }
-/**
- * Returns the lowest ASCII character encoded number.
- * @return {number}
- */
-  get getLowerCharRange() {return this.#lowerCharRange;}
+  /**
+   * Returns the lowest ASCII character encoded number.
+   * @return {number}
+   */
+  get getLowerCharRange() { return this.#lowerCharRange; }
 
   /**
  * Returns the highest ASCII character encoded number.
  * @return {number}
  */
-  get getUpperCharRange() {return this.#upperCharRange;}
+  get getUpperCharRange() { return this.#upperCharRange; }
 }
 
 /**
@@ -299,38 +301,50 @@ class CharRange {
 class CharType {
   /**@type {CharRange[]} */
   #charRangeArray = [];
-  
+
   /**
    * Takes an array CharRange
    * @param {CharRange[]} charRangeArray
    */
   constructor(charRangeArray) {
-    
     this.#charRangeArray = charRangeArray;
-    //todo delete below if still constructing with an array as a param
-    // charRangeArray.forEach(element => {
-    //   this.#charRangeArray.push(element);
-    // });
-    
   }
 
-#isCharRange = (unValidatedObj) => {
-  if (unValidatedObj instanceof CharRange) { return true;}
-}
-  
+  #isCharRange = (unValidatedObj) => {
+    if (unValidatedObj instanceof CharRange) { return true; }
+  }
+
 
   set addCharRange(charRangeToAdd) {
-    if(this.#isCharRange(charRangeToAdd)) {
-      this.#charRangeArray.push();}
-      else if (charRangeToAdd )
-      {
+    if (this.#isCharRange(charRangeToAdd)) {
+      this.#charRangeArray.push();
+    }
+    else if (charRangeToAdd) {
 
-      }
+    }
+
+  }
+
+  generateRandomChar(charRange) {
+    return String.fromCharCode(getRandomIntInclusive(charRange.lowerCharRange, charRange.upperCharRange));
+  };
+
+  // return random string of chars
+  getStringOfCharsGivenANumber(numberCharsToReturn){
+    let arrOfRandomChars = [];
+
+    // generate number of characters equal to numberCharsToReturn
+    for (let index = 0; index < numberCharsToReturn ; index++) {
+      // get a random ASCII number then convertit to a character
+      let randomChar =  generateRandomChar(this.getCharRangeArrayContents());
+      arrOfRandomChars.push(randomChar);
+    }
     
+    return arrOfRandomChars;
   }
 
   /**@returns char */
-  get getCharRangeArrayContents () {
+  getCharRangeArrayContents() {
 
     // If there is more than one array of charRange objects randomly choose one.
     if (this.#charRangeArray.length > 1) {
@@ -385,7 +399,7 @@ class ViewPage {
 
   constructor(header, dialogParagraph, model) {
     this.header = header;
-    this. dialogParagraph = dialogParagraph;
+    this.dialogParagraph = dialogParagraph;
     this.dataModel = model;
 
   }
@@ -401,7 +415,7 @@ class ViewWindow {
   }
 
   /**Sets the current view page */
- // set setViewPage
+  // set setViewPage
 
   /**@returns {ViewPage} Gets the current view page. */
   get getViewPage() {
@@ -415,29 +429,29 @@ class ViewWindow {
 // view dialog content
 let passwordPageHeader = "Choose password length."
 let dialogParagraph = "Input a number between 8 and 128";
-let passwordLengthPageModel = {"passwordLength":"99"};
+let passwordLengthPageModel = { "passwordLength": "99" };
 
-let passwordCharTypePageModel = {"isUpperCase":false, "isLowerCase": false, "isNumber": false, "isSpecialChar": false};
+let passwordCharTypePageModel = { "isUpperCase": false, "isLowerCase": false, "isNumber": false, "isSpecialChar": false };
 
 // //#endregion
 /**@param {PageTextStructure} startingState The default starting page for the state machine.*/
 function pageContext(startingState) {
   startingState.pageContextRef = this;
-   let currentState = startingState;
+  let currentState = startingState;
 
-/** summary Called by a stateObj to change the state within the page context which will be called later by the this.start method.
- * @param {PageTextStructure} stateObj Represents a questionPage and it's validation.
-*/
-  this.change = function (stateObj){
+  /** summary Called by a stateObj to change the state within the page context which will be called later by the this.start method.
+   * @param {PageTextStructure} stateObj Represents a questionPage and it's validation.
+  */
+  this.change = function (stateObj) {
     // if the userChoiceData is complete 
-    if (userChoiceData.isComplete === true) {return}
+    if (userChoiceData.isComplete === true) { return }
     currentState = stateObj
     currentState.pageContextRef = this;
     currentState.run();
   }
 
-/**@summary Allows the currentState to call out to the pageContext in order to run the currentState property */
-  this.start = function () {currentState.run();}
+  /**@summary Allows the currentState to call out to the pageContext in order to run the currentState property */
+  this.start = function () { currentState.run(); }
 
 }
 
@@ -449,11 +463,12 @@ function pageContext(startingState) {
 // call question page that returns a valid answer
 function generatePassword() {
 
-// pageContext
-var pageContextInst = new pageContext(passwordLengthQuestionPage);
-pageContextInst.start();
-//Choose chars types
-console.log(userChoiceData);
+  // pageContext
+  var pageContextInst = new pageContext(passwordLengthQuestionPage);
+  pageContextInst.start();
+
+  //Choose chars types
+  console.log(userChoiceData);
   return generateRandomChar(symbolsCharType.getCharRangeArrayContents);
 }
 
